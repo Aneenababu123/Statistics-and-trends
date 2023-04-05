@@ -136,7 +136,7 @@ da2, da3 = filter_data(
 print(da2)
 print(da3)
 #Calling the bar plot function.
-plot1(da2, 'C02 emissions', 'Countries', 'C02 emissions')
+plot1(da2, 'CO2 emissions', 'Countries', 'CO2 emissions')
 
 da4, da5 = filter_data(
     data, 'Indicator Name', 'CO2 emissions from liquid fuel consumption (% of total)', country1, year)
