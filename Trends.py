@@ -66,6 +66,26 @@ def plot1(data, title, x, y):
     plt.show()
     return
 
+def plot2(data, title, x, y):
+    """Function for line plot"""
+    
+    #Reading data the from for dataframe
+    ax = data.plot.line(figsize=(50, 30), fontsize=50, linewidth=6.0)
+    #Sets the location for y axis
+    ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
+    #Set the title for plot
+    ax.set_title(title, fontsize=50)
+    #Set label for x axis
+    ax.set_xlabel(x, fontsize=50)
+    #Set label for y axis
+    ax.set_ylabel(y, fontsize=50)
+    ax.legend(fontsize=50)
+    #Save the bar plot as png
+    plt.savefig(title + '.png')
+    plt.show()
+    return
+
+
 #Country1 used for the data analysis
 country1 = ['India', 'Pakistan', 'Peru', 'Afghanistan']
 #years used for the data analysis
@@ -86,4 +106,26 @@ print(da4)
 print(da5)
 #Calling the bar plot function.
 plot1(da4, 'CO2 Emissions', 'Countries', 'C02 Emissions')
+
+#Create year and country for line plot
+country2 = ['Sri Lanka', 'Myanmar', 'Pakistan', 'Japan', 'Nigeria']
+year2 = ['2010', '2013', '2015', '2017', '2019']
+da6, da7 = filter_data(
+    data, 'Indicator Name', 'Renewable energy consumption (% of total final energy consumption)', country2, year2)
+#Print data
+print(da6)
+print(da7)
+
+#Calling line plot function
+plot2(da7, 'Renewable energy consumption', 'Year',
+          'Percentage of renewable energy consumption')
+
+da8, da9 = filter_data(
+    data, 'Indicator Name', 'Renewable electricity output (% of total electricity output)', country2, year2)
+print(da8)
+print(da9)
+#Calling line plot function
+plot2(da9, 'Renewable electricity output', 'Year',
+          'Percentage of renewable electricity output')
+
 
