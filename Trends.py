@@ -17,7 +17,7 @@ def read_data(filename):
     
     """
     #Reads the data from csv 
-    df = pd.read_csv(filename, skiprows=4)
+    df = pd.read_csv(filename, skiprows = 4)
     return df
     #Returns the dataframe
 
@@ -29,18 +29,18 @@ def filter_data(df, col, value, con, yr):
     
     """
     #Grouping the datas with it's column value 
-    da1 = df.groupby(col, group_keys=True)
+    da1 = df.groupby(col, group_keys = True)
     #Retrives the data
     da1 = da1.get_group(value)
     #Resetting the data
     da1 = da1.reset_index()
     #Setting the country name as the new index of the data1
-    da1.set_index('Country Name', inplace=True)
+    da1.set_index('Country Name', inplace = True)
     #Sorting the data from dataframe
     da1 = da1.loc[:, yr]
     da1 = da1.loc[con, :]
     #Dropping the NAN values from dataframe
-    da1 = da1.dropna(axis=1)
+    da1 = da1.dropna(axis = 1)
     #Resetting the index
     da1 = da1.reset_index()
     #Transposing the index 
@@ -54,12 +54,12 @@ def stat_data(df, col, value, yr, a):
     Reads a dataframe with different indicator and returns dataframe.
     """
     #Grouping the rows by column values
-    df3 = df.groupby(col, group_keys= True)
+    df3 = df.groupby(col, group_keys = True)
     #Retriving the data
     df3 = df3.get_group(value)
     #Reset the datas of the dataframe
     df3 = df3.reset_index()
-    df2 = df3.set_index('Indicator Name', inplace=True)
+    df2 = df3.set_index('Indicator Name', inplace = True)
     df3 = df3.loc[:, yr]
     #Transposing the index
     df3 = df3.transpose()
@@ -71,15 +71,15 @@ def plot1(data, title, x, y):
     """Function for bar plot"""
     
     #Reading data the from for dataframe
-    ax = data.plot.bar(x='Country Name', rot=0, figsize=(50, 30), fontsize=50)
+    ax = data.plot.bar(x='Country Name', rot = 0, figsize = (50, 30), fontsize = 50)
     #Sets the location for y axis
     ax.set_yticks([0, 20, 40, 60, 80])
     #Set the title for plot
-    ax.set_title(title, fontsize=50)
+    ax.set_title(title, fontsize = 50)
     #Set label for x axis
-    ax.set_xlabel(x, fontsize=50)
+    ax.set_xlabel(x, fontsize = 50)
     #Set label for y label
-    ax.set_ylabel(y, fontsize=50)
+    ax.set_ylabel(y, fontsize = 50)
     ax.legend(fontsize=50)
     #Save the bar plot as png
     plt.savefig(title + '.png')
@@ -90,16 +90,16 @@ def plot2(data, title, x, y):
     """Function for line plot"""
     
     #Reading data the from for dataframe
-    ax = data.plot.line(figsize=(50, 30), fontsize=50, linewidth=6.0)
+    ax = data.plot.line(figsize = (50, 30), fontsize = 50, linewidth = 6.0)
     #Sets the location for y axis
     ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90])
     #Set the title for plot
-    ax.set_title(title, fontsize=50)
+    ax.set_title(title, fontsize = 50)
     #Set label for x axis
-    ax.set_xlabel(x, fontsize=50)
+    ax.set_xlabel(x, fontsize = 50)
     #Set label for y axis
-    ax.set_ylabel(y, fontsize=50)
-    ax.legend(fontsize=50)
+    ax.set_ylabel(y, fontsize = 50)
+    ax.legend(fontsize = 50)
     #Save the bar plot as png
     plt.savefig(title + '.png')
     plt.show()
@@ -111,14 +111,14 @@ def heat_map(data):
     The below function visualizes the corelation between multiple indicators.
 
     """
-    plt.figure(figsize=(70,58))
+    plt.figure(figsize = (70,58))
     #Set title
     plt.title("Brazil's Heat map", size=50)
-    plt.xticks(rotation=90,horizontalalignment = "center",fontsize=50)
-    plt.yticks(fontsize=50)
-    sns.heatmap(data.corr(),annot=True)
+    plt.xticks(rotation=90,horizontalalignment = "center",fontsize = 50)
+    plt.yticks(fontsize = 50)
+    sns.heatmap(data.corr(),annot = True,annot_kws = {"size":42})
     #Saves heat map as png
-    plt.savefig('Brazil_heatmap.png',dpi=150, bbox_inches='tight')
+    plt.savefig('Brazil_heatmap.png',dpi=150, bbox_inches ='tight')
     plt.show()
     return data
 
@@ -174,4 +174,21 @@ dah = stat_data(data,'Country Name', 'Brazil', yearh , ind)
 print(dah.head())
 #Calling the function
 heat_map(dah)
+
+start = 1990
+end = 2013
+yeard = [str(i) for i in range(start, end+1)]
+ind2 = ['Renewable energy consumption (% of total final energy consumption)','Renewable electricity output (% of total electricity output)','CO2 emissions from gaseous fuel consumption (% of total)','Methane emissions (% change from 1990)' ]
+des = stat_data(data,'Country Name', 'Kuwait', yeard , ind2)
+#Returns desctiptive statistics summary
+summary_stats = des.describe()
+print(summary_stats)
+skewness = stats.skew(des['Renewable energy consumption (% of total final energy consumption)'])
+kurtosis = des['CO2 emissions from gaseous fuel consumption (% of total)'].kurtosis()
+print('Skewness of renewable enery consumption in Brazil : ', skewness)
+print('kurtosis of renewable electricity output in Kuwait : ', kurtosis)
+#Save as csv file
+summary_stats.to_csv('summary_statistics.csv')
+
+
 
