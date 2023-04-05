@@ -167,7 +167,7 @@ plot2(da9, 'Renewable electricity output', 'Year',
           'Percentage of renewable electricity output')
 
 #Create variable name as yearh
-yearh = ['1990', '1995', '2000', '2005', '2010']
+yearh = ['1991', '1995', '2000', '2005', '2010']
 #Create variable for heat map
 ind =['CO2 emissions from solid fuel consumption (% of total)','CO2 emissions from liquid fuel consumption (% of total)','Renewable energy consumption (% of total final energy consumption)','Renewable electricity output (% of total electricity output)','CO2 emissions from gaseous fuel consumption (% of total)','Methane emissions (% change from 1990)']
 dah = stat_data(data,'Country Name', 'Brazil', yearh , ind)
@@ -175,18 +175,18 @@ print(dah.head())
 #Calling the function
 heat_map(dah)
 
-start = 1990
-end = 2013
+start = 1961
+end = 2016
 yeard = [str(i) for i in range(start, end+1)]
-ind2 = ['Renewable energy consumption (% of total final energy consumption)','Renewable electricity output (% of total electricity output)','CO2 emissions from gaseous fuel consumption (% of total)','Methane emissions (% change from 1990)' ]
+ind2 = ['Total fisheries production (metric tons)','CO2 emissions from gaseous fuel consumption (kt)','CO2 emissions from liquid fuel consumption (kt)','Capture fisheries production (metric tons)']
 des = stat_data(data,'Country Name', 'Kuwait', yeard , ind2)
 #Returns desctiptive statistics summary
 summary_stats = des.describe()
 print(summary_stats)
-skewness = stats.skew(des['Renewable energy consumption (% of total final energy consumption)'])
-kurtosis = des['CO2 emissions from gaseous fuel consumption (% of total)'].kurtosis()
-print('Skewness of renewable enery consumption in Brazil : ', skewness)
-print('kurtosis of renewable electricity output in Kuwait : ', kurtosis)
+skewness = stats.skew(des['Total fisheries production (metric tons)'])
+kurtosis = des['CO2 emissions from gaseous fuel consumption (kt)'].kurtosis()
+print('Skewness of total fisheries production in Kuwait : ', skewness)
+print('kurtosis of CO2 emissions from gaseous fuel consumption in Kuwait : ', kurtosis)
 #Save as csv file
 summary_stats.to_csv('summary_statistics.csv')
 
