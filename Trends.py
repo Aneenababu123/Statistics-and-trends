@@ -7,6 +7,8 @@ Created on Wed Apr  5 00:24:49 2023
 
 import pandas as pd
 import matplotlib.pyplot as plt
+import scipy.stats as stats
+import seaborn as sns
 
 
 def read_data(filename):                                                                                                                                                                                                                                                 
@@ -47,6 +49,24 @@ def filter_data(df, col, value, con, yr):
     #returning the dataframe for the heat map
     return da1, da2
 
+def stat_data(df, col, value, yr, a):
+    """
+    Reads a dataframe with different indicator and returns dataframe.
+    """
+    #Grouping the rows by column values
+    df3 = df.groupby(col, group_keys= True)
+    #Retriving the data
+    df3 = df3.get_group(value)
+    #Reset the datas of the dataframe
+    df3 = df3.reset_index()
+    df2 = df3.set_index('Indicator Name', inplace=True)
+    df3 = df3.loc[:, yr]
+    #Transposing the index
+    df3 = df3.transpose()
+    df3 = df3.loc[:,a ]
+    #Returns the dataframe for Heat map
+    return df3
+
 def plot1(data, title, x, y):
     """Function for bar plot"""
     
@@ -84,6 +104,24 @@ def plot2(data, title, x, y):
     plt.savefig(title + '.png')
     plt.show()
     return
+
+
+def heat_map(data):
+    """
+    The below function visualizes the corelation between multiple indicators.
+
+    """
+    plt.figure(figsize=(70,58))
+    #Set title
+    plt.title("Brazil's Heat map", size=50)
+    plt.xticks(rotation=90,horizontalalignment = "center",fontsize=50)
+    plt.yticks(fontsize=50)
+    sns.heatmap(data.corr(),annot=True)
+    #Saves heat map as png
+    plt.savefig('Brazil_heatmap.png',dpi=150, bbox_inches='tight')
+    plt.show()
+    return data
+
 
 
 #Country1 used for the data analysis
@@ -128,4 +166,12 @@ print(da9)
 plot2(da9, 'Renewable electricity output', 'Year',
           'Percentage of renewable electricity output')
 
+#Create variable name as yearh
+yearh = ['1990', '1995', '2000', '2005', '2010']
+#Create variable for heat map
+ind =['CO2 emissions from solid fuel consumption (% of total)','CO2 emissions from liquid fuel consumption (% of total)','Renewable energy consumption (% of total final energy consumption)','Renewable electricity output (% of total electricity output)','CO2 emissions from gaseous fuel consumption (% of total)','Methane emissions (% change from 1990)']
+dah = stat_data(data,'Country Name', 'Brazil', yearh , ind)
+print(dah.head())
+#Calling the function
+heat_map(dah)
 
